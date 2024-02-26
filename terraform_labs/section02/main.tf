@@ -21,7 +21,7 @@ resource "aws_vpc" "demo_vpc" {
 #Deploy the private subnets
 resource "aws_subnet" "demo_private_subnets" {
   for_each          = var.demo_private_subnets
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.demo_vpc.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, each.value)
   availability_zone = tolist(data.aws_availability_zones.available.names)[each.value]
 
@@ -34,7 +34,7 @@ resource "aws_subnet" "demo_private_subnets" {
 #Deploy the public subnets
 resource "aws_subnet" "demo_public_subnets" {
   for_each                = var.demo_public_subnets
-  vpc_id                  = aws_vpc.vpc.id
+  vpc_id                  = aws_vpc.demo_vpc.id
   cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
   availability_zone       = tolist(data.aws_availability_zones.available.names)[each.value]
   map_public_ip_on_launch = true
@@ -47,7 +47,7 @@ resource "aws_subnet" "demo_public_subnets" {
 
 #Create route tables for public and private subnets
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.demo_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -61,7 +61,7 @@ resource "aws_route_table" "public_route_table" {
 }
 
 resource "aws_route_table" "private_route_table" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.demo_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -91,7 +91,7 @@ resource "aws_route_table_association" "private" {
 
 #Create Internet Gateway
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.demo_vpc.id
   tags = {
     Name = "demo_igw"
   }
@@ -108,9 +108,9 @@ resource "aws_eip" "nat_gateway_eip" {
 
 #Create NAT Gateway
 resource "aws_nat_gateway" "nat_gateway" {
-  depends_on    = [aws_subnet.public_subnets]
+  depends_on    = [aws_subnet.demo_public_subnets]
   allocation_id = aws_eip.nat_gateway_eip.id
-  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
+  subnet_id     = aws_subnet.demo_public_subnets["public_subnet_1"].id
   tags = {
     Name = "demo_nat_gateway"
   }
