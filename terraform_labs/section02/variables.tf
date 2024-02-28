@@ -14,13 +14,11 @@ variable "demo_private_subnets" {
   default = {
     "demo_private_subnet_1" = 1
     "demo_private_subnet_2" = 2
-    "demo_private_subnet_3" = 3
   }
 }
 variable "demo_public_subnets" {
   default = {
     "demo_public_subnet_1" = 1
     "demo_public_subnet_2" = 2
-    "demo_public_subnet_3" = 3
   }
 }
