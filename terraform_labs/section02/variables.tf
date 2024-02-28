@@ -16,6 +16,7 @@ variable "demo_private_subnets" {
     "demo_private_subnet_2" = 2
   }
 }
+
 variable "demo_public_subnets" {
   default = {
     "demo_public_subnet_1" = 1
