@@ -1,3 +1,25 @@
+# Lab: What is Infrastructure as Code?
+
+## What is Infrastructure as Code
+
+Infrastructure as Code is essentially a hub that can be used for collaboration across the IT organization to improve infrastructure deployments, increase our ability to scale quickly, and improve the application development process. Infrastructure as Code allows us to do all this consistently and proficiently. By using Infrastructure as Code for both our on-premises infrastructure and the public cloud, our organization can provide dynamic infrastructure to both our internal team members and ensure our customers have an excellent experience.
+
+## Benefits of IaC
+
+While there are many benefits of Infrastructure as Code, a few key benefits include simplifying cloud adoption, allowing us to adopt cloud-based services and offerings to improve our capabilities quickly. Infrastructure as Code allows us to remove many of the manual steps required today for infrastructure requests, giving us the ability to automate approved requests without worrying about tickets sitting in a queue. We can also use Infrastructure as Code to provide capacity-on-demand by offering a library of services for our developers. We can publish a self-service capability where developers and application owners can be empowered to request and provision infrastructure that better matches their requirements. Again, all of this is possible while driving standardization and consistency throughout the organization, which can drive efficiencies and reduce errors or deviations from established norms.
+
+## Example of IaC
+
+## IaC Tools
+
+The list below represents some of the most popular Infrastructure as Code tools used by many organizations worldwide. These tools focus on deploying infrastructure on a private or public cloud platform. The list does NOT include tools such as Puppet, Chef, Saltstack, or Ansible since those are commonly placed in the configuration management category and don't really deploy infrastructure resources. There are likely other tools available, but they are not as popular as the ones listed below.
+
+- HashiCorp Terraform - terraform.io
+- AWS CloudFormation - aws.amazon.com/cloudformation
+- Azure Resource Manager (ARM) - azure.microsoft.com
+- Google Cloud Deployment Manager - cloud.google.com/deployment-manager/docs
+- Pulumi - pulumi.com
+
 # Lab: Benefits of IaC
 
 ## Benefits of IaC
@@ -25,7 +47,7 @@ You have been tasked with deploying some basic infrastructure on AWS to host a p
 
 The end state of the AWS environment should look similar to the following diagram:
 
-![Desired Infrastructure](./img/obj-1-desired-infrastructure.png)
+![Desired Infrastructure](../../img/obj-1-desired-infrastructure.png)
 
 > _This lab will walk you through configuring the infrastructure step by step using a manual process. After manually completing the tasks, the lab will show you how Terraform can be used to automate the creation of the same infrastructure._
 
@@ -35,13 +57,13 @@ The end state of the AWS environment should look similar to the following diagra
 
 In the VPC console, click **Create VPC**:
 
-![Create VPC](./img/obj-1-create-vpc.png)
+![Create VPC](../../img/obj-1-create-vpc.png)
 
 ### **Step 1.2**
 
 Give the VPC a name of **demo-vpc** and set the IPv4 CIDR block to use **10.0.0.0/16**. Leave all of the other settings as default and select **Create VPC** at the bottom of the Create VPC screen.
 
-![Configure VPC](./img/obj-1-configure-vpc.png)
+![Configure VPC](../../img/obj-1-configure-vpc.png)
 
 ## Task 2: Create public and private subnets in three different Availability Zones.
 
@@ -49,13 +71,13 @@ Give the VPC a name of **demo-vpc** and set the IPv4 CIDR block to use **10.0.0.
 
 In the VPC console, select **_Subnets_** from the left navigation panel. Click **Create Subnet**.
 
-![Select Subnet](./img/obj-1-create-subnet.png)
+![Select Subnet](../../img/obj-1-create-subnet.png)
 
 ### **Step 2.2**
 
 Select the VPC created in Step 1 from the dropdown list. Give the subnet the name `private-subnet-1` and select `us-east-1a` from the dropdown list for the Availability Zone. Enter the IPv4 CIDR block of `10.0.0.0/24`.
 
-![Create Subnets](./img/obj-1-create-new-subnet.png)
+![Create Subnets](../../img/obj-1-create-new-subnet.png)
 
 ### **Step 2.3**
 
@@ -75,7 +97,7 @@ Repeat the previous step to create the additional subnets required to build out 
 
 In the VPC console, select Internet Gateways from the left navigation panel in the VPC console. Click the Create Gateway button in the top right of the AWS console.
 
-![IGW](./img/obj-1-create-igw.png)
+![IGW](../../img/obj-1-create-igw.png)
 
 ### **Step 3.2**
 
@@ -83,17 +105,17 @@ Give the new Internet Gateway a name of **_demo-igw_** and click the Create inte
 
 > _Note: The Internet Gateway can incur charges on your account. For the purposes of this lab, you will incur very minimal charges, likely a penny or two (US dollars). Don't fret...we will delete this resource shortly._
 
-![Create IGW](./img/obj-1-new-igw.png)
+![Create IGW](../../img/obj-1-new-igw.png)
 
 ### **Step 3.3**
 
 In the Internet Gateway console, select the Actions menu and choose **_Attach to VPC_** from the dropdown list.
 
-![Attach IGW](./img/obj-1-select-igw-attach.png)
+![Attach IGW](../../img/obj-1-select-igw-attach.png)
 
 Select the VPC created in Step 1 by clicking the text box and choosing the VPC. Click the **_Attach internet gateway_** button to complete the task.
 
-![Attach IGW to VPC](./img/obj-1-attach-igw-to-vpc.png)
+![Attach IGW to VPC](../../img/obj-1-attach-igw-to-vpc.png)
 
 ## Task 4: Provision a NAT Gateway (a single instance will do) for outbound connectivity.
 
@@ -101,13 +123,13 @@ Select the VPC created in Step 1 by clicking the text box and choosing the VPC. 
 
 Back in the VPC Console, select **NAT Gateways** from the left navigation panel. Click the **_Create NAT Gateway_** button on the top right of the AWS console.
 
-![NAT Gateway Creation](./img/obj-1-nat-gateway-select.png)
+![NAT Gateway Creation](../../img/obj-1-nat-gateway-select.png)
 
 ### **Step 4.2**
 
 Provide the name **_demo-nat-gateway_** for the NAT Gateway. Select a subnet by choosing **_public-subnet-2_** from the dropdown list. Keep the Connectivity Type as **_Public_**. Click the **_Allocate Elastic IP_** button to automatically create and assign a new Elastic IP address for the NAT Gateway. Scroll down and click the **_Create NAT Gateway_** button to complete the task.
 
-![Create NAT Gateway](./img/obj-1-create-nat-gateway.png)
+![Create NAT Gateway](../../img/obj-1-create-nat-gateway.png)
 
 ## Task 5: Ensure that route tables are configured to properly route traffic based on the requirements.
 
@@ -117,7 +139,7 @@ In the VPC console, select **Route Tables** from the left navigation panel. Clic
 
 Provide the name `public-rtb` for the route table and select the VPC created in Step 1. Click the **_Create route table_** button to create your first route table.
 
-![Create rtb](./img/obj-1-create-rtb.png)
+![Create rtb](../../img/obj-1-create-rtb.png)
 
 Repeat the above task to create a second route table. Name the second route table `private-rtb`. Select the same VPC created in Step 1. Click the **_Create route table_** button to create the second route table.
 
@@ -125,23 +147,23 @@ Repeat the above task to create a second route table. Name the second route tabl
 
 From the Route Tables console, select the tick box next to the route table named `public-rtb`. In the bottom panel, select the **_Subnet Associations_** tab. Click the **_Edit subnet associations_** button.
 
-![Create rtb](./img/obj-1-select-rtb.png)
+![Create rtb](../../img/obj-1-select-rtb.png)
 
 Select the three **_public_** subnets from the list of available subnets by checking the tick box next to the subnets. These are the same three subnets that you created in Step 2. Once you have selected the three subnets, click on the **_Save associations_** button to save your configuration.
 
 Repeat this step for the `private-rtb` and selecting the 3 private subnets that were created in Step 2.
 
-![Create rtb](./img/obj-1-rtb-associations.png)
+![Create rtb](../../img/obj-1-rtb-associations.png)
 
 ### **Step 5.3**
 
 Now that the subnets have been associated with the proper route table, we need to add the routes to ensure network traffic is routed correctly. From the Route Tables console, select the `public-rtb` again. In the bottom pane, select the **Routes** tab and click **_Edit Routes_**.
 
-![Create rtb](./img/obj-1-modify-routes.png)
+![Create rtb](../../img/obj-1-modify-routes.png)
 
 In the Edit Routes window, click the **_Add route_** button. Enter `0.0.0.0/0` in the **Destination** text box to define our new route destination. Click the text box for **Target**, select **_Internet Gateway_**, and select the Internet Gateway that was created in Step 3. It should be the only one listed. Click **_Save changes_** to save the new route configuration.
 
-![Create rtb](./img/obj-1-add-new-route.png)
+![Create rtb](../../img/obj-1-add-new-route.png)
 
 Repeat this step to add a route to the `private-rtb`. The Destination should be `0.0.0.0/0`. Click the text box for **Target**, select **_NAT Gateway_**, and choose the NAT Gateway that was created in Step 4. It should be the only one listed. Click **_Save changes_** to save the new route configuration.
 
@@ -165,7 +187,7 @@ As you are deleting resources, note that manually deleting resources is sometime
 
 Prior to deleting the VPC, you must first delete the NAT gateway. Select NAT Gateways on the left navigation pane and delete the **_demo-nat-gateway_**. Afterwards, in the VPC Console, select the VPC that we just created by checking the tick box next to the VPC. From the Actions menu, select **_Delete VPC_**. Confirm you wish to delete the VPC and related AWS resources by typing _delete_ in the text box at the bottom of the prompt. Click the **_Delete_** button.
 
-![Create rtb](./img/obj-1-delete-vpc.png)
+![Create rtb](../../img/obj-1-delete-vpc.png)
 
 ## Task 7: Prepare files and credentials for using Terraform to deploy cloud resources.
 
