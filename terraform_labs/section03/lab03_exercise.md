@@ -345,7 +345,11 @@ terraform plan
 terraform apply
 terraform destroy -auto-approve
 ```
-## Current state of our resources
+## Current detailed (low level) state of our resources
 ```Ubuntu(WSL)
 terraform show
+```
+## Current less-detailed (highlevel) state of the resources that is being managed
+```Ubuntu(WSL)
+terraform state list
 ```
