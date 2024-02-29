@@ -325,3 +325,27 @@ aws_subnet.public_subnets["public_subnet_2"]
 aws_subnet.public_subnets["public_subnet_3"]
 aws_vpc.vpc
 ```
+
+### Own Notes
+
+## Authenticate to AWS IAM role
+IAM -> Access Management -> Users
+```Ubuntu(WSL)
+export AWS_ACCESS_KEY_ID="<YOUR ACCESS KEY>"
+export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
+```
+## Terraform style code formatting
+```Ubuntu(WSL)
+cd terraform_labs/section03 
+terraform fmt
+```
+## Create destroy resources 
+```Ubuntu(WSL)
+terraform plan
+terraform apply
+terraform destroy -auto-approve
+```
+## Current state of our resources
+```Ubuntu(WSL)
+terraform show
+```
