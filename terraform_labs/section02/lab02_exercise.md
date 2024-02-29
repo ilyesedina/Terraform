@@ -593,6 +593,7 @@ Destroy complete! Resources: 18 destroyed.
 ### Own Notes
 
 ## Authenticate to AWS IAM role
+IAM -> Access Management -> Users
 ```Ubuntu(WSL)
 export AWS_ACCESS_KEY_ID="<YOUR ACCESS KEY>"
 export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
