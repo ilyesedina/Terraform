@@ -589,3 +589,22 @@ Destroy complete! Resources: 18 destroyed.
 ```
 
 ### **Congratulations, you've reached the end of this lab.**
+
+### Own Notes
+
+## Authenticate to AWS IAM role
+```Ubuntu(WSL)
+export AWS_ACCESS_KEY_ID="<YOUR ACCESS KEY>"
+export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
+```
+## Terraform style code formatting
+```Ubuntu(WSL)
+cd terraform_labs/section02 
+terraform fmt
+```
+## Create destroy resources 
+```Ubuntu(WSL)
+terraform plan
+terraform apply
+terraform destroy -auto-approve
+```
