@@ -339,6 +339,10 @@ export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
 cd terraform_labs/section03 
 terraform fmt
 ```
+## Validate chnages wanted to be made 
+```Ubuntu(WSL)
+terraform validate
+```
 ## Create destroy resources 
 ```Ubuntu(WSL)
 terraform plan
