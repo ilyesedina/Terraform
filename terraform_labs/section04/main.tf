@@ -1,8 +1,6 @@
 # Configure the AWS Provider
 provider "aws" {
-  #access_key  = "YOUR_ACCESS KEY"
-  #secret_key  = "YOUR_SECRET KEY"
-  region = ${{ vars.AWS_REGION }} # using GitHub secrets
+  region = "eu-west-1"
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -118,29 +116,14 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
-# Terraform Data Block - To Lookup Latest Ubuntu 20.04 AMI Image
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"]
-}
-
-# Terraform Resource Block - To Build EC2 instance in Public Subnet
-resource "aws_instance" "web_server" {
-  ami           = data.aws_ami.ubuntu.id
+resource "aws_instance" "web" {
+  ami           = "ami-0ef9e689241f0bb6e"
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
+
+  subnet_id              = "subnet-0c1eaab5e0292edc2"
+  vpc_security_group_ids = ["sg-0f764137551b84495"]
+
   tags = {
-    Name = "Ubuntu EC2 Server"
+    "Terraform" = "true"
   }
 }
