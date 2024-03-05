@@ -1,8 +1,8 @@
 # Configure the AWS Provider
 provider "aws" {
   region = "eu-west-1"
-  shared_credentials_file = "/Users/username/.aws/credentials"
-  prifile = "edina-eu-west-1"
+  #shared_credentials_file = "/Users/username/.aws/credentials"
+  #profile                 = "ilyes-eu-west-1"
   #aws_access_key_id = YOUR_ACCESS_KEY
   #aws_secret_access_key = YOUR_SECRET_KEY
 }
@@ -103,7 +103,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 #Create EIP for NAT Gateway
 resource "aws_eip" "nat_gateway_eip" {
-  domain     = "vpc"
+  vpc        = true
   depends_on = [aws_internet_gateway.internet_gateway]
   tags = {
     Name = "demo_igw_eip"
@@ -120,6 +120,33 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
+# Terraform Data Block - To Lookup Latest Ubuntu 20.04 AMI Image
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"]
+}
+
+# Terraform Resource Block - To Build EC2 instance in Public Subnet
+resource "aws_instance" "web_server" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
+  tags = {
+    Name = "Ubuntu EC2 Server"
+  }
+}
+
 resource "aws_instance" "web" {
   ami           = "ami-0ef9e689241f0bb6e"
   instance_type = "t2.micro"
@@ -130,4 +157,48 @@ resource "aws_instance" "web" {
   tags = {
     "Terraform" = "true"
   }
+}
+
+# New resource to deploy an Amazon S3 bucket
+resource "aws_s3_bucket" "my-new-S3-bucket" {
+  #The first resource block is the type of S3 bucket that we want to deploy to AWS. This is the name that shows up in the AWS console.
+  #The name of the bucket set inside terraform is "my-new-S3-bucket". This is the name that we will use to reference the bucket inside the terraform configuration.
+  bucket = "my-new-tf-test-bucket-${random_id.randomness.hex}" #set the parameter for name. The bucket has to be globally unique. This is the name inside AWS
+
+  tags = {
+    Name    = "My S3 Bucket" #metadata for the bucket
+    Purpose = "Intro to Resource Blocks Lab"
+  }
+}
+
+resource "aws_s3_bucket_ownership_controls" "my_new_bucket_acl" {
+  bucket = aws_s3_bucket.my-new-S3-bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+# Configure an AWS security group
+resource "aws_security_group" "my-new-security-group" {
+  name        = "web_server_inbound"
+  description = "Allow inbound traffic on tcp/443"
+  vpc_id      = aws_vpc.vpc.id # Referencing the VPC that we created earlier
+
+  ingress {
+    description = "Allow 443 from the Internet"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow traffic from anywhere, by anyone
+  }
+
+  tags = {
+    Name    = "web_server_inbound"
+    Purpose = "Intro to Resource Blocks Lab"
+  }
+}
+
+# Configure a resource from the random provider
+resource "random_id" "randomness" {
+  byte_length = 16
 }
