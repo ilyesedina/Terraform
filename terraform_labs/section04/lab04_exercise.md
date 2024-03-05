@@ -10,9 +10,9 @@ In case there is an issue with the access credentials (AuthFailure)
 Check the date and if it is out of sync update it
 ```Ubuntu(WSL)
 date
-sudo date --set="2024-03-04 10:25:00" #manual 
-sudo hwclock --systohc #synchronize the system clock to the hardware
-sudo hwclock #check the time
+sudo date
+sudo hwclock --systohc
+sudo hwclock -s 
 ```
 ## Terraform style code formatting
 ```Ubuntu(WSL)
