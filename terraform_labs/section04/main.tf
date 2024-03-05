@@ -1,6 +1,10 @@
 # Configure the AWS Provider
 provider "aws" {
   region = "eu-west-1"
+  shared_credentials_file = "/Users/username/.aws/credentials"
+  prifile = "edina-eu-west-1"
+  #aws_access_key_id = YOUR_ACCESS_KEY
+  #aws_secret_access_key = YOUR_SECRET_KEY
 }
 
 #Retrieve the list of AZs in the current AWS region
