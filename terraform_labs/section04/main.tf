@@ -1,12 +1,3 @@
-# Configure the AWS Provider
-provider "aws" {
-  region = "eu-west-1"
-  #shared_credentials_file = "/Users/username/.aws/credentials"
-  #profile                 = "ilyes-eu-west-1"
-  #aws_access_key_id = YOUR_ACCESS_KEY
-  #aws_secret_access_key = YOUR_SECRET_KEY
-}
-
 #Retrieve the list of AZs in the current AWS region
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
@@ -159,7 +150,7 @@ resource "aws_instance" "web" {
   }
 }
 
-# New resource to deploy an Amazon S3 bucket
+/* # New resource to deploy an Amazon S3 bucket
 resource "aws_s3_bucket" "my-new-S3-bucket" {
   #The first resource block is the type of S3 bucket that we want to deploy to AWS. This is the name that shows up in the AWS console.
   #The name of the bucket set inside terraform is "my-new-S3-bucket". This is the name that we will use to reference the bucket inside the terraform configuration.
@@ -202,3 +193,4 @@ resource "aws_security_group" "my-new-security-group" {
 resource "random_id" "randomness" {
   byte_length = 16
 }
+ */
