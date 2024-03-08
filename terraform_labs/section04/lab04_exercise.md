@@ -6,6 +6,7 @@ IAM -> Access Management -> Users
 export AWS_ACCESS_KEY_ID="<YOUR ACCESS KEY>"
 export AWS_SECRET_ACCESS_KEY="<YOUR SECRET KEY>"
 ```
+This has been separated out to a file called ```terrafom/credentials.auto.tfvars``` that is not being tracked by Git, as it is part of the gitignore.
 In case there is an issue with the access credentials (AuthFailure)
 Check the date and if it is out of sync update it
 ```Ubuntu(WSL)
