@@ -11,3 +11,5 @@ terraform {
     }
   }
 }
+
+#If you want to chnage the lowest version of the provider chnage the 'required_version' nd run 'terraform init'
