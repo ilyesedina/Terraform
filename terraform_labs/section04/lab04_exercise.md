@@ -13,7 +13,7 @@ Check the date and if it is out of sync update it
 date
 sudo date
 sudo hwclock --systohc
-sudo hwclock -s 
+sudo hwclock -s # if this doesn't work restart the pc
 ```
 ## Terraform style code formatting
 ```Ubuntu(WSL)
@@ -55,4 +55,10 @@ Plan deletion
 ```Ubuntu(WSL)
 terraform plan -destroy
 terraform destroy
+```
+## Output 
+in lab0402
+```Ubuntu(WSL)
+terraform output -json
+terraform output // show the short verson
 ```
