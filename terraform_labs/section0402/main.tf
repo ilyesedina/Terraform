@@ -66,3 +66,12 @@ resource "aws_instance" "web_server" {
   subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id
   // other configuration...
 }
+
+resource "tls_private_key" "generated" {
+  algorithm = "RSA"
+}
+
+resource "local_file" "private_key_pem" {
+  content  = tls_private_key.generated.private_key_pem
+  filename = "MyAWSKey.pem"
+}
