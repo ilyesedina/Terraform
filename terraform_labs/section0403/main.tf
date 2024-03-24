@@ -156,7 +156,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 }
 
 # Terraform Resource Block - To Build EC2 instance in Public Subnet
-resource "aws_instance" "web_server" {
+resource "aws_instance" "ubuntu_server" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id
@@ -169,9 +169,34 @@ resource "aws_instance" "web_server" {
     private_key = tls_private_key.generated.private_key_pem
     host        = self.public_ip
   }
+
+  # Leave the first part of the block unchanged and create our `local-exec` provisioner
+  provisioner "local-exec" {
+    command = "chmod 600 ${local_file.private_key_pem.filename}"
+  }
+
+  # Create a remote-exec provisioner block to pull down web application.
+  provisioner "remote-exec" {
+    #These commands can be run on Mac/Linux
+    #Windows users can replace it with PowerShell or native Windows commands
+    inline = [
+      #"sleep 30", # Wait for 30 seconds
+      "sudo rm -rf /tmp",
+      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
+      "sudo sh /tmp/assets/setup-web.sh",
+    ]
+  }
+
+  tags = {
+    Name = "Ubuntu EC2 Server"
+  }
+
+  lifecycle {
+    ignore_changes = [security_groups]
+  }
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "web_server" { #maybe add '_server'  web
   ami           = "ami-0ef9e689241f0bb6e"
   instance_type = "t2.micro"
 
@@ -179,13 +204,8 @@ resource "aws_instance" "web" {
   vpc_security_group_ids = ["sg-0f764137551b84495"]
 
   tags = {
-    "Terraform" = "true"
-    Name        = "Ubuntu EC2 Server"
-  }
-
-  lifecycle {
-    ignore_changes = [security_groups]
-  }
+      "Terraform" = "true"
+    }
 }
 
 resource "aws_subnet" "variables-subnet" {
@@ -198,34 +218,21 @@ resource "aws_subnet" "variables-subnet" {
     Name      = "sub-variables-${var.variables_sub_az}"
     Terraform = "true"
   }
-
-
-  # Leave the first part of the block unchanged and create our `local-exec` provisioner
-  provisioner "local-exec" {
-    command = "chmod 600 ${local_file.private_key_pem.filename}"
-  }
-
-  # Create a remote-exec provisioner block to pull down web application.
-  provisioner "remote-exec" {
-    inline = [
-      "sleep 30", # Wait for 30 seconds
-      "sudo rm -rf /tmp",
-      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
-      "sudo sh /tmp/assets/setup-web.sh",
-    ]
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("${local_file.private_key_pem.filename}")
-      host        = aws_instance.web_server.public_ip
-    }
-  }
+  //maybe here missing something
+  /* connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("${local_file.private_key_pem.filename}")
+    host        = aws_instance.ubuntu_server.public_ip
+  } */
 }
 
+# TLS provider - Generate key on AWS
 resource "tls_private_key" "generated" {
   algorithm = "RSA"
 }
 
+# Grete local key that can be resued
 resource "local_file" "private_key_pem" {
   content  = tls_private_key.generated.private_key_pem
   filename = "MyAWSKey.pem"
@@ -241,7 +248,7 @@ resource "aws_key_pair" "generated" {
   }
 }
 
-# Security Groups
+# Create a Security Group that allows SSH to your instance
 resource "aws_security_group" "ingress-ssh" {
   name   = "allow-all-ssh"
   vpc_id = aws_vpc.vpc.id
@@ -262,7 +269,7 @@ resource "aws_security_group" "ingress-ssh" {
   }
 }
 
-# Create Security Group - Web Traffic
+# Create Security Group - Web Traffic over the standard HTTP and HTTPS ports.
 resource "aws_security_group" "vpc-web" {
   name        = "vpc-web-${terraform.workspace}"
   vpc_id      = aws_vpc.vpc.id
