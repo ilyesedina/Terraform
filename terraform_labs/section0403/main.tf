@@ -172,6 +172,7 @@ resource "aws_instance" "ubuntu_server" {
 
   # Leave the first part of the block unchanged and create our `local-exec` provisioner
   provisioner "local-exec" {
+    # Convert it to Windows/ PowerSell commands
     command = "chmod 600 ${local_file.private_key_pem.filename}"
   }
 
@@ -197,14 +198,15 @@ resource "aws_instance" "ubuntu_server" {
 }
 
 resource "aws_instance" "web_server" { #maybe add '_server'  web
-  ami           = "ami-0ef9e689241f0bb6e"
-  instance_type = "t2.micro"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro" #var.instance_type
 
-  subnet_id              = aws_subnet.variables-subnet.id
-  vpc_security_group_ids = ["sg-0f764137551b84495"]
+  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id 
+  security_groups             = [aws_security_group.vpc-ping.id]
+  associate_public_ip_address = true
 
   tags = {
-      "Terraform" = "true"
+      Name = "Web EC2 Server"
     }
 }
 
@@ -218,13 +220,6 @@ resource "aws_subnet" "variables-subnet" {
     Name      = "sub-variables-${var.variables_sub_az}"
     Terraform = "true"
   }
-  //maybe here missing something
-  /* connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("${local_file.private_key_pem.filename}")
-    host        = aws_instance.ubuntu_server.public_ip
-  } */
 }
 
 # TLS provider - Generate key on AWS
