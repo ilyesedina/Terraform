@@ -175,7 +175,7 @@ resource "aws_instance" "web" {
   ami           = "ami-0ef9e689241f0bb6e"
   instance_type = "t2.micro"
 
-  subnet_id              = "subnet-0c1eaab5e0292edc2"
+  subnet_id              = aws_subnet.variables-subnet.id
   vpc_security_group_ids = ["sg-0f764137551b84495"]
 
   tags = {
@@ -208,10 +208,17 @@ resource "aws_subnet" "variables-subnet" {
   # Create a remote-exec provisioner block to pull down web application.
   provisioner "remote-exec" {
     inline = [
+      "sleep 30", # Wait for 30 seconds
       "sudo rm -rf /tmp",
       "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
       "sudo sh /tmp/assets/setup-web.sh",
     ]
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("${local_file.private_key_pem.filename}")
+      host        = aws_instance.web_server.public_ip
+    }
   }
 }
 
