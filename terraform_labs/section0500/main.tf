@@ -359,11 +359,11 @@ resource "aws_instance" "web_server2" {
 # Usage: terraform [global options] import [options] ADDR ID
 # Importing aws_instance.aws_linux and garbing the instance ID for aws that we created manually on the ui (manually_created_instance)
 # terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
-resource "aws_instance" "aws_linux" {
+/* resource "aws_instance" "aws_linux" {
   ami           = "ami-0843a4d6dc2130849" #added form the terraform 'state show aws_instance.aws_linux' command
   instance_type = "t2.micro" #added form the terraform 'state show aws_instance.aws_linux' command
   tags = local.common_tags #added to reference the local vars tags to validate the import of the resource
-}
+} */
 # terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
 # Import successful!
 # terraform plan - returns errors 
