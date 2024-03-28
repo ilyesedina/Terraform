@@ -30,7 +30,7 @@ module "subnet_addrs" {
 #Declared resource
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr #for this you have to declare the 'vpc_cidr' variable in the variables.tf file  
-  // cidr_block = "10.0.0.0/16" (This is the static way to declare the cidr block)
+  #cidr_block = "10.0.0.0/16" #(This is the static way to declare the cidr block)
 
   tags = {
     Name        = var.vpc_name
@@ -202,7 +202,7 @@ resource "aws_instance" "web_server" { #maybe add '_server'  web
   instance_type = "t2.micro" #var.instance_type
 
   subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id 
-  security_groups             = [aws_security_group.vpc-ping.id]
+  security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.vpc-web.id]
   associate_public_ip_address = true
 
   tags = {
