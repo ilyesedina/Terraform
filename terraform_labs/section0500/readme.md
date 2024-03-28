@@ -62,3 +62,42 @@ in lab0402
 terraform output -json
 terraform output // show the short verson
 ```
+
+### Formation
+`terraform fmt`
+### Terraform Taint and Replace
+`terraform taint  aws_instance.web_server2` flag a resource as degraded or damaged 
+`terraform untaint  aws_instance.web_server2` - remove the tainted (flagged)
+`terraform apply -replace="aws_instance.web_server2"`
+### Debug
+`terraform state list` - see the resources built in a list
+`terraform state show aws_instance.web_server2` show more detail of a resource
+### Importing existing resources 
+`terraform import`
+`terraform import -h` describes how to use it
+Usage: terraform [global options] import [options] ADDR ID
+Importing `aws_instance.aws_linux` and garbing the instance ID for aws that we created manually on the ui (manually_created_instance)
+`terraform import aws_instance.aws_linux i-02a614f1b9f2c0021`
+```
+resource "aws_instance" "aws_linux" {
+}
+```
+`Import successful!`
+`terraform plan` - returns errors 
+`terraform state list` - lists the resources in the state file and check if the "aws_instance.aws_linux" has been imported/created - in has been created
+`terraform state show aws_instance.aws_linux` - to see more info and copy in the missing info to the resouce block
+```
+resource "aws_instance" "aws_linux" {
+  ami           = "ami-0843a4d6dc2130849" 
+  instance_type = "t2.micro" 
+}
+```
+`terraform plan` - should return no errors and show the plan of the resources that will be created
+Added to reference the local vars tags to validate the import of the resource
+```
+resource "aws_instance" "aws_linux" {
+  ami           = "ami-0843a4d6dc2130849" 
+  instance_type = "t2.micro" 
+  tags = local.common_tags
+}
+```
