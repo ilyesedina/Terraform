@@ -69,7 +69,7 @@ terraform output // show the short verson
 `terraform taint  aws_instance.web_server2` flag a resource as degraded or damaged 
 `terraform untaint  aws_instance.web_server2` - remove the tainted (flagged)
 `terraform apply -replace="aws_instance.web_server2"`
-### Debug
+### Debugging Error messages  
 `terraform state list` - see the resources built in a list
 `terraform state show aws_instance.web_server2` show more detail of a resource
 ### Importing existing resources 
@@ -101,3 +101,32 @@ resource "aws_instance" "aws_linux" {
   tags = local.common_tags
 }
 ```
+### Terraform Workspaces
+Terraform uses a state files to map your configurations.  The state, belonging to a Terraform workspace, that persistent the data. Initially, the backend has a single workspace, "default", with one associated state. Workspaces is a Terraform allows us to organize infrastructure by environments (dev, qa prod) and variables in a single directory.
+`terraform workspace` 
+`terraform workspace list` 
+-  default - eu-west-1 Ireland
+- development - eu-west-3 France (Paris)
+
+Usually it is separated out into 
+- dev - staging environment
+- qa - testing
+- prod 
+
+### Terraform State CLI (Command-line interface)
+`terraform show` -a way of interacting with the `terrafom.tfstate` file that is a local copy of the state file on AWS
+`terraform state list`
+
+### Debugging Terraform 
+Log levels 
+- TRACE 
+- DEBUG 
+- INFO 
+- WARN 
+- ERROR
+
+Enable logging WSL
+`export TF_LOG=TRACE`
+Direct the logs to a file `export TF_LOG_PATH="terraform_log.txt"`
+Disable logs `export TF_LOG=""`
+`export TF_LOG_PATH=""` set the value to empty on the logfile 
