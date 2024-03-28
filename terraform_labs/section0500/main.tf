@@ -201,13 +201,13 @@ resource "aws_instance" "web_server" { #maybe add '_server'  web
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro" #var.instance_type
 
-  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id 
+  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id
   security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.vpc-web.id]
   associate_public_ip_address = true
 
   tags = {
-      Name = "Web EC2 Server"
-    }
+    Name = "Web EC2 Server"
+  }
 }
 
 resource "aws_subnet" "variables-subnet" {
@@ -313,3 +313,60 @@ resource "aws_security_group" "vpc-ping" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+# Terraform Resource Block - To Build Web Server in Public Subnet
+resource "aws_instance" "web_server2" {
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id
+  security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.ingress-ssh.id, aws_security_group.vpc-web.id]
+  associate_public_ip_address = true
+  key_name                    = aws_key_pair.generated.key_name
+  connection {
+    user        = "ubuntu"
+    private_key = tls_private_key.generated.private_key_pem
+    host        = self.public_ip
+  }
+
+  # Leave the first part of the block unchanged and create our `local-exec` provisioner
+  provisioner "local-exec" {
+    command = "chmod 600 ${local_file.private_key_pem.filename}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      #"exit 2",
+      "sudo rm -rf /tmp",
+      "sudo git clone https://github.com/hashicorp/demo-terraform-101 /tmp",
+      "sudo sh /tmp/assets/setup-web.sh",
+    ]
+  }
+
+  tags = {
+    Name = "Web EC2 Server"
+  }
+
+  lifecycle {
+    ignore_changes = [security_groups]
+  }
+}
+
+# Terraform Import - lab 5
+# Usage: terraform [global options] import [options] ADDR ID
+# Importing aws_instance.aws_linux and garbing the instance ID for aws that we created manually on the ui (manually_created_instance)
+# terraform import aws_instance.aws_linux i-0469a027430740c43
+resource "aws_instance" "aws_linux" {
+  instance_type = "t2.micro"
+  ami           = "ami-0843a4d6dc2130849"
+  tags_all = {
+    Name = "manually_created_instance"
+    owner = "Me"
+    provider = "Terraform lab5"
+  }
+}
+# terraform import aws_instance.aws_linux i-0469a027430740c43
+# Import successful!
+# terraform plan - returns errors 
+# terraform state list - lists the resources in the state file and check if the "aws_instance.aws_linux" has been imported/created - in has been created
+# terraform state show aws_instance.aws_linux - to see more info and copy in the missing info to the resouce block
+# terraform plan - should return no errors and show the plan of the resources that will be created
