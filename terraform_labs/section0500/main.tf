@@ -7,6 +7,10 @@ locals {
   team        = "api_mgmt_dev"
   application = "corp_api"
   server_name = "ec2-${var.environment}-api-${var.variables_sub_az}"
+  common_tags = {
+    Owner       = "IlyesQSC"
+    Provisoned  = "Terraform"
+  }
 }
 
 # Creating Modules 
@@ -354,17 +358,13 @@ resource "aws_instance" "web_server2" {
 # Terraform Import - lab 5
 # Usage: terraform [global options] import [options] ADDR ID
 # Importing aws_instance.aws_linux and garbing the instance ID for aws that we created manually on the ui (manually_created_instance)
-# terraform import aws_instance.aws_linux i-0469a027430740c43
+# terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
 resource "aws_instance" "aws_linux" {
-  instance_type = "t2.micro"
   ami           = "ami-0843a4d6dc2130849"
-  tags_all = {
-    Name = "manually_created_instance"
-    owner = "Me"
-    provider = "Terraform lab5"
-  }
+  instance_type = "t2.micro"
+  tags = local.common_tags 
 }
-# terraform import aws_instance.aws_linux i-0469a027430740c43
+# terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
 # Import successful!
 # terraform plan - returns errors 
 # terraform state list - lists the resources in the state file and check if the "aws_instance.aws_linux" has been imported/created - in has been created
