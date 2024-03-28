@@ -1,6 +1,6 @@
 variable "aws_region" {
   type    = string
-  default = "eu-west-3"
+  default = "eu-west-1"
 }
 
 variable "aws_secret_access_key" {
@@ -38,7 +38,7 @@ variable "variables_sub_cidr" {
 variable "variables_sub_az" {
   description = "Availability Zone used Variables Subnet"
   type        = string
-  default     = "eu-west-3a"
+  default     = "eu-west-1a"
 }
 
 variable "variables_sub_auto_ip" {
