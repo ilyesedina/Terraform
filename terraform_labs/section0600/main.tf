@@ -355,10 +355,10 @@ resource "aws_instance" "web_server2" {
 # Usage: terraform [global options] import [options] ADDR ID
 # Importing aws_instance.aws_linux and garbing the instance ID for aws that we created manually on the ui (manually_created_instance)
 # terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
- resource "aws_instance" "aws_linux" {
+/*  resource "aws_instance" "aws_linux" {
   ami           = "ami-0843a4d6dc2130849" #added form the terraform 'state show aws_instance.aws_linux' command
   instance_type = "t2.micro" #added form the terraform 'state show aws_instance.aws_linux' command
-} 
+}  */
 # terraform import aws_instance.aws_linux i-02a614f1b9f2c0021
 # Import successful!
 # terraform plan - returns errors 
@@ -368,13 +368,41 @@ resource "aws_instance" "web_server2" {
 
 # Terraform Import - lab 6
 # In the root configuration file here we're invoking a new server module that lives outside of our working directory 'terraform/server/server.tf'
+
 module "server" {
   source          = "./server"
   ami             = data.aws_ami.ubuntu.id
-  subnet_id       = aws_subnet.public_subnets["public_subnet_3"].id
+  subnet_id       = aws_subnet.public_subnets["public_subnet_2"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
     aws_security_group.ingress-ssh.id,
     aws_security_group.vpc-web.id
   ]
+}
+
+module "server_subnet_1" {
+  source          = "./server"
+  ami             = data.aws_ami.ubuntu.id
+  subnet_id       = aws_subnet.public_subnets["public_subnet_1"].id
+  security_groups = [
+    aws_security_group.vpc-ping.id,
+    aws_security_group.ingress-ssh.id,
+    aws_security_group.vpc-web.id
+  ]
+}
+
+output "public_ip" {
+  value = module.server.public_ip
+}
+
+output "public_dns" {
+  value = module.server.public_dns
+}
+
+output "public_ip_server_subnet_1" {
+  value = module.server_subnet_1.public_ip
+}
+
+output "public_dns_server_subnet_1" {
+  value = module.server_subnet_1.public_dns
 }
