@@ -370,9 +370,9 @@ resource "aws_instance" "web_server2" {
 # In the root configuration file here we're invoking a new server module that lives outside of our working directory 'terraform/server/server.tf'
 
 module "server" {
-  source          = "./modules/server"
-  ami             = data.aws_ami.ubuntu.id
-  subnet_id       = aws_subnet.public_subnets["public_subnet_2"].id
+  source    = "./modules/server"
+  ami       = data.aws_ami.ubuntu.id
+  subnet_id = aws_subnet.public_subnets["public_subnet_2"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
     aws_security_group.ingress-ssh.id,
@@ -381,9 +381,12 @@ module "server" {
 }
 
 module "server_subnet_1" {
-  source          = "./modules/server"
-  ami             = data.aws_ami.ubuntu.id
-  subnet_id       = aws_subnet.public_subnets["public_subnet_1"].id
+  source      = "./modules/web_server"
+  ami         = data.aws_ami.ubuntu.id
+  key_name    = aws_key_pair.generated.key_name
+  user        = "ubuntu"
+  private_key = tls_private_key.generated.private_key_pem
+  subnet_id   = aws_subnet.public_subnets["public_subnet_1"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
     aws_security_group.ingress-ssh.id,
