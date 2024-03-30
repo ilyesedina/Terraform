@@ -372,6 +372,7 @@ resource "aws_instance" "web_server2" {
 module "server" {
   source    = "./modules/server"
   ami       = data.aws_ami.ubuntu.id
+  size      = "t2.micro"
   subnet_id = aws_subnet.public_subnets["public_subnet_2"].id
   security_groups = [
     aws_security_group.vpc-ping.id,
@@ -402,6 +403,10 @@ output "public_dns" {
   value = module.server.public_dns
 }
 
+output "size" {
+  value = module.server.size
+}
+
 output "public_ip_server_subnet_1" {
   value = module.server_subnet_1.public_ip
 }
@@ -413,18 +418,17 @@ output "public_dns_server_subnet_1" {
 # AWS Autoscaling module 
 # AWS Ui ->Region -> EC2 -> Auto Scaling Groups -> myasg has been created
 module "autoscaling" {
-  source  = "terraform-aws-modules/autoscaling/aws"
-  version = "4.9.0"
+  source = "github.com/terraform-aws-modules/terraform-aws-autoscaling?ref=v4.9.0"
 
   # Autoscaling group
   name = "myasg"
 
-  vpc_zone_identifier = [aws_subnet.private_subnets["private_subnet_1"].id, 
-  aws_subnet.private_subnets["private_subnet_2"].id] 
+  vpc_zone_identifier = [aws_subnet.private_subnets["private_subnet_1"].id,
+  aws_subnet.private_subnets["private_subnet_2"].id]
   #aws_subnet.private_subnets["private_subnet_3"].id
-  min_size            = 0
-  max_size            = 1
-  desired_capacity    = 1
+  min_size         = 0
+  max_size         = 1
+  desired_capacity = 1
 
   # Launch template
   use_lt    = true
@@ -436,4 +440,5 @@ module "autoscaling" {
   tags_as_map = {
     Name = "Web EC2 Server 2"
   }
+
 }
