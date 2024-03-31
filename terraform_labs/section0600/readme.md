@@ -130,3 +130,56 @@ Enable logging WSL
 Direct the logs to a file `export TF_LOG_PATH="terraform_log.txt"`
 Disable logs `export TF_LOG=""`
 `export TF_LOG_PATH=""` set the value to empty on the logfile 
+
+### Terraform Modules
+Reference server module `terraform/server/server.tf` from the `root` configuration file
+See witch directories are being recognized by terraform run `terraform providers`   
+```
+Providers required by configuration:
+├── provider[registry.terraform.io/hashicorp/local] 2.1.0
+├── provider[registry.terraform.io/hashicorp/tls] 3.1.0
+├── provider[registry.terraform.io/hashicorp/aws] ~> 4.0
+├── provider[registry.terraform.io/hashicorp/http] ~> 2.1.0
+├── provider[registry.terraform.io/hashicorp/random] ~> 3.1.0
+├── module.server
+│   └── provider[registry.terraform.io/hashicorp/aws]
+└── module.subnet_addrs
+```
+`terraform state list` to see the newly created resources
+` terraform state show module.server.aws_instance.web` 
+
+### Terraform Module Sources
+[Official doc](https://developer.hashicorp.com/terraform/language/modules/sources)
+
+`tree` to see the folder structure
+```
+├── MyAWSKey.pem
+├── credentials.auto.tfvars
+├── main.tf
+├── modules
+│   └── server
+│       └── server.tf
+├── output.tf
+├── providers.tf
+├── readme.md
+├── terraform.tfstate
+├── terraform.tfstate.backup
+├── terraform.tfstate.d
+│   └── development
+│       ├── terraform.tfstate
+│       └── terraform.tfstate.backup
+├── variables.tf
+└── versions.tf
+```
+### Terraform Module Scope
+Resources within Child Modules 
+```
+terraform console
+> module.autoscaling
+```
+### Terraform Module Versions
+Terraform assumes version numbers follow the `Semantic Versioning` 2.0 convention. `Major.Minor.Patch` 
+- Minor = feature
+- Patch = hotfix/ bugfix
+- Example: 3.11.0 
+- `version = ">3.0.0"` anything higher than v3

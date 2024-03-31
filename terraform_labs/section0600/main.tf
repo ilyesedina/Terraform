@@ -464,7 +464,7 @@ output "s3_bucket_name" {
 # Consuming Modules from the Terraform Module Registry (vpc)
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.11.0"
+  version = "3.11.0" // Semantic Versioning Major.Minor(feature).Patch(hotfix)
 
   name = "my-vpc-terraform"
   cidr = "10.0.0.0/16"
