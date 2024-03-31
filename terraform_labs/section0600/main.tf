@@ -374,6 +374,7 @@ module "server" {
   ami       = data.aws_ami.ubuntu.id
   size      = "t2.micro"
   subnet_id = aws_subnet.public_subnets["public_subnet_2"].id
+  public_ip = module.server.public_ip
   security_groups = [
     aws_security_group.vpc-ping.id,
     aws_security_group.ingress-ssh.id,
@@ -418,7 +419,9 @@ output "public_dns_server_subnet_1" {
 # AWS Autoscaling module 
 # AWS Ui ->Region -> EC2 -> Auto Scaling Groups -> myasg has been created
 module "autoscaling" {
-  source = "github.com/terraform-aws-modules/terraform-aws-autoscaling?ref=v4.9.0"
+  #source = "github.com/terraform-aws-modules/terraform-aws-autoscaling?ref=v4.9.0"
+  source  = "terraform-aws-modules/autoscaling/aws"
+  version = "4.9.0"
 
   # Autoscaling group
   name = "myasg"
@@ -440,5 +443,9 @@ module "autoscaling" {
   tags_as_map = {
     Name = "Web EC2 Server 2"
   }
-
 }
+
+output "asg_group_size" {
+  value = module.autoscaling.autoscaling_group_max_size
+}
+

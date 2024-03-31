@@ -31,7 +31,6 @@ resource "aws_instance" "web" {
     host        = self.public_ip
   }
 
-
   provisioner "remote-exec" {
     inline = [
       "sudo rm -rf /tmp",
