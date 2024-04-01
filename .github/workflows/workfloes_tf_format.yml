@@ -5,7 +5,7 @@ on: push
 jobs:
   format:
     runs-on: ubuntu-latest   
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,4 +15,5 @@ jobs:
 
       - name: Format
         shell: bash
+        working-directory: 'terraform_labs' 
         run: terraform fmt -check -recursive
