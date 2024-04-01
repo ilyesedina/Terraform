@@ -8,7 +8,8 @@ resource "aws_vpc" "vpc" {
 
   tags = {
     Name        = var.vpc_name
-    Environment = "demo_environment"
+    #Environment = "demo_environment" "stage"
+    Environment = "QA"
     Terraform   = "true"
   }
 }
