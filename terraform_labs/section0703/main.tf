@@ -5,7 +5,6 @@ data "aws_region" "current" {}
 #Define the VPC 
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
-
   tags = {
     Name        = var.vpc_name
     #Environment = "demo_environment" "stage"
@@ -110,4 +109,26 @@ resource "aws_nat_gateway" "nat_gateway" {
   tags = {
     Name = "demo_nat_gateway"
   }
+}
+
+resource "aws_subnet" "variables-subnet" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.variables_sub_cidr
+  availability_zone       = var.variables_sub_az
+  map_public_ip_on_launch = var.variables_sub_auto_ip
+
+  tags = {
+    Name      = "sub-variables-${var.variables_sub_az}"
+    Terraform = "true"
+  }
+}
+
+resource "tls_private_key" "generated" {
+  algorithm = "RSA" # protects sensitive data through encryption and decryption using a private and public key pair
+  # (RSA explained)[https://www.youtube.com/watch?v=4zahvcJ9glg&ab_channel=EddieWoo]
+} 
+
+resource "local_file" "private_key_pem" {
+  content  = tls_private_key.generated.private_key_pem
+  filename = "MyAWSKey.pem"
 }
