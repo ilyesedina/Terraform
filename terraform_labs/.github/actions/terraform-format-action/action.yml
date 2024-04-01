@@ -1,0 +1,19 @@
+name: 'Terraform Format'
+
+on: push
+
+jobs:
+  format:
+      runs-on: ubuntu-latest
+      working-directory: 'terraform_labs'      
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Format
+        shell: bash
+        run: terraform fmt -check -recursive
