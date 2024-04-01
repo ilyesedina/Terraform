@@ -201,13 +201,13 @@ resource "aws_instance" "web_server" { #maybe add '_server'  web
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro" #var.instance_type
 
-  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id 
+  subnet_id                   = aws_subnet.public_subnets["public_subnet_1"].id
   security_groups             = [aws_security_group.vpc-ping.id, aws_security_group.vpc-web.id]
   associate_public_ip_address = true
 
   tags = {
-      Name = "Web EC2 Server"
-    }
+    Name = "Web EC2 Server"
+  }
 }
 
 resource "aws_subnet" "variables-subnet" {
