@@ -4,9 +4,9 @@ on: push
 
 jobs:
   format:
-      runs-on: ubuntu-latest
-      working-directory: 'terraform_labs'      
-      
+    runs-on: ubuntu-latest
+    working-directory: 'terraform_labs'      
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
