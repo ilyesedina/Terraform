@@ -9,7 +9,8 @@ on:
 jobs:
   terraform-init:
     runs-on: ubuntu-latest
-    env: dev_plan
+    environment: 
+      name: dev_plan
 
     steps:
       - name: Git clone the repository
@@ -47,7 +48,8 @@ jobs:
   terraform-apply:
     needs: terraform-init
     runs-on: ubuntu-latest
-    environment: dev_deploy
+    environment: 
+      name: dev_deploy
 
     steps:
       - name: Download tfmyplan
