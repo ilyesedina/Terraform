@@ -1,28 +1,60 @@
 name: 'Terraform Plan'
+run-name: Terraform Deploy by '@${{ github.actor }}'
 
 on:
-    pull_request:
-      paths-ignore:
-        - '**.md'
-
-env:
-    TF_ENV: 'default'
+  pull_request:
+    paths-ignore:
+      - '**.md'
 
 jobs:
-  plan:
+  terraform-init:
     runs-on: ubuntu-latest
+    env: dev_plan
 
     steps:
-      - name: Checkout
+      - name: Git clone the repository
         uses: actions/checkout@v2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
 
+      - name: Normalize Line Endings
+        run: |
+          sudo apt-get install -y dos2unix
+          find . -type f -print0 | xargs -0 dos2unix --quiet --keepdate
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
       - name: Terraform Init
         working-directory: 'terraform_labs'
         run: terraform init
 
-      - name: Terraform Plan
+      - name: Terraform Plan and save to tfmyplan
         working-directory: 'terraform_labs'
-        run: terraform plan
+        run: terraform plan -out tfmyplan
+
+      - name: Upload tfmyplan
+        uses: actions/upload-artifact@master
+        with:
+          name: tfmyplan
+          path: terraform_labs/tfmyplan
+
+  terraform-apply:
+    needs: terraform-init
+    runs-on: ubuntu-latest
+    environment: dev_deploy
+
+    steps:
+      - name: Download tfmyplan
+        uses: actions/download-artifact@master
+        with:
+          name: tfmyplan
+
+      - name: Terraform apply
+        working-directory: 'terraform_labs'
+        run: terraform apply tfmyplan --auto-approve
