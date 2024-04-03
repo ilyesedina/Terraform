@@ -12,7 +12,12 @@ jobs:
   terraform-destroy:
     if: github.event.pull_request.merged == true  && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        environment: ['dev_plan', 'dev_deploy']
+    environment: 
+      name: ${{ matrix.environment }}
+
     steps: 
       - name: Terraform Destroy
         working-directory: 'terraform_labs'

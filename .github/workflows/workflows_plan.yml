@@ -7,7 +7,7 @@ on:
       - '**.md'
 
 jobs:
-  terraform-init:
+  terraform-plan:
     runs-on: ubuntu-latest
     environment: 
       name: dev_plan
@@ -46,7 +46,7 @@ jobs:
           path: terraform_labs/tfmyplan
 
   terraform-apply:
-    needs: terraform-init
+    needs: terraform-plan
     runs-on: ubuntu-latest
     environment: 
       name: dev_deploy
