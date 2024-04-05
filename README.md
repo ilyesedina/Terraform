@@ -1,11 +1,10 @@
-##Terraform Associate Certification
+## Terraform Associate Certification Prep
 
-## [Course Link](https://www.udemy.com/course/terraform-hands-on-labs)
-Discounts for the [Terraform Hands on Lab Course](https://www.udemy.com/course/terraform-hands-on-labs) and other HashiCorp courses can be found at the [HashiCorp Course Content and Discounts](https://github.com/btkrausen/hashicorp)
+Following [Terraform Hands on Lab Course](https://www.udemy.com/course/terraform-hands-on-labs) and [Repo](https://github.com/btkrausen/hashicorp)
 
-| No  | Lab Pull Request | Documention |
+| No  | Lab's Pull Requests | Documention |
 | --- | ---------------- | ----------- |
-| 1 | [Theoretical Knowledge](https://btk.me/v) | MARCH2024 |
+| 1 | Theoretical Knowledge | Adding latter |
 | 2 | [What is Infrastructure As Code (IaC) concepts](https://github.com/ilyesedina/Terraform/pull/2) | Adding latter |
 | 3 | [Terraform Purpose](https://github.com/ilyesedina/Terraform/pull/4) | Adding latter | 
 | 4 | [Understand Terraform Basics](https://github.com/ilyesedina/Terraform/pull/6) | Adding latter |
@@ -14,7 +13,7 @@ Discounts for the [Terraform Hands on Lab Course](https://www.udemy.com/course/t
 | 7 | [Use the Core Terraform Workflow](https://github.com/ilyesedina/Terraform/pull/12) | Adding latter |
 | 8 | [ Implement and Maintain State](https://github.com/ilyesedina/Terraform/pull/15) | Adding latter |
 | 9 | Read, Generate, and Modify Configuration | Adding latter |
-| 10 |  Understand Terraform Cloud Capabilities | Adding latter |
+| 10 | Understand Terraform Cloud Capabilities | Adding latter |
 | 11 | Additional labs | Adding latter |
 | 12 | Extra tips for the Exam | Adding latter |
 | 13 | Final exam practice | Adding latter |
