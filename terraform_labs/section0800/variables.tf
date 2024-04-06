@@ -4,11 +4,13 @@ variable "aws_region" {
 }
 
 variable "aws_secret_access_key" {
-  type = string
+  description = "AWS secret key"
+  type        = string
 }
 
 variable "aws_access_key" {
-  type = string
+  description = "AWS access key"
+  type        = string
 }
 
 variable "vpc_cidr" {
@@ -58,4 +60,14 @@ variable "environment" {
   description = "Environment for deployment"
   type        = string
   default     = "dev"
+}
+
+# Terraform State File location configuration
+terraform {
+  backend "s3" {
+    bucket = "my-terraform-state-demo-ilyes"
+    // S3 bucket created manually through the AWS Console and referenced here
+    key    = "dev/aws_infra"
+    region = "eu-west-1"
+  }
 }
