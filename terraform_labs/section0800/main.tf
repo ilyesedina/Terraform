@@ -10,6 +10,7 @@ resource "aws_vpc" "vpc" {
     #Environment = "demo_environment" "stage"
     Environment = "QA"
     Terraform   = "true"
+    test = "newtag"
   }
 }
 
