@@ -1,6 +1,7 @@
 myplan
 .terraform
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 terraform.tfstate
 terraform.tfstate.backup
 terraform-provider-aws_v5.38.0_x5
