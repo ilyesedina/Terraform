@@ -51,7 +51,7 @@ terraform {
     unlock_method  = "DELETE"
   } */
 
-  # Terraform Cloud backend
+  /* # Terraform Cloud backend
   backend "remote" {
     hostname     = "app.terraform.io"
     organization = "lego-demo"
@@ -59,5 +59,5 @@ terraform {
     workspaces {
       name = "my-aws-app"
     }
-  }
+  } */
 }
