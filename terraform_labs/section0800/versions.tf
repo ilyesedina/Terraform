@@ -29,9 +29,12 @@ terraform {
   }
 }
 
-# Terraform State File location configuration
 terraform {
-  /*  backend "s3" {
+ # Local backend
+  backend "local" {
+    path = "mystate/terraform.tfstate"
+  } 
+/*  backend "s3" {
     bucket = "my-terraform-state-demo-ilyes"
     // S3 bucket created manually through the AWS Console and referenced here
     key    = "dev/aws_infra"
@@ -40,7 +43,7 @@ terraform {
     # DynamoDB table for locking the state file
     dynamodb_table = "terraform-locks-demo"
     encrypt        = true
-  }  */
+  }  */ 
 
   # HTTP backend 
   /* backend "http" {

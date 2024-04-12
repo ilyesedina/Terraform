@@ -117,7 +117,7 @@ resource "aws_eip" "nat_gateway_eip" {
   tags = {
     Name = "demo_igw_eip"
   }
-}
+} 
 
 #Create NAT Gateway
 resource "aws_nat_gateway" "nat_gateway" {
