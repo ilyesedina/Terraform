@@ -47,9 +47,9 @@ jobs:
 
   terraform-apply:
     needs: terraform-plan
-    runs-on: ubuntu-latest
     environment: 
       name: dev_deploy
+    runs-on: ubuntu-latest
 
     steps:
       - name: Download tfmyplan
