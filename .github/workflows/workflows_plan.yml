@@ -46,8 +46,9 @@ jobs:
           path: terraform_labs/tfmyplan
 
   terraform-apply:
-    needs: terraform-plan
+    runs-on: ubuntu-latest
     uses: "./.github/workflows/terraform_apply.yaml"
+    needs: terraform-plan
   
   terraform-destroy:
     runs-on: ubuntu-latest
