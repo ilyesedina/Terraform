@@ -1,4 +1,4 @@
-name: 'Terraform Plan'
+name: 'Terraform Apply'
 run-name: Terraform Deploy by '@${{ github.actor }}'
 
 on:
@@ -6,18 +6,22 @@ on:
     paths-ignore:
       - '**.md'
 
+permissions:
+  id-token: write   # This is required for requesting the JWT through OIDC
+  contents: read    # This is required for actions/checkout
+
 jobs:
-  terraform-plan:
+  terraform-apply:
     runs-on: ubuntu-latest
     environment: 
-      name: dev_plan
+      name: dev_deploy
 
     steps:
       - name: Git clone the repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
+        uses: hashicorp/setup-terraform@v3
 
       - name: Normalize Line Endings
         run: |
@@ -31,32 +35,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Terraform Init
-        working-directory: 'terraform_labs'
+      - name: Terraform init
         run: terraform init
-
-      - name: Terraform Plan and save to tfmyplan
         working-directory: 'terraform_labs'
-        run: terraform plan -out tfmyplan
 
-      - name: Upload tfmyplan
-        uses: actions/upload-artifact@master
+      - name: Download tfmyplan
+        uses: actions/download-artifact@master
         with:
           name: tfmyplan
           path: terraform_labs/tfmyplan
 
-  terraform-apply:
-    needs: terraform-plan
-    uses: "./.github/workflows/terraform_apply.yaml"
-  
-  terraform-destroy:
-    runs-on: ubuntu-latest
-    needs: terraform-apply
-    if: github.event.pull_request.merged == true  && github.event.pull_request.base.ref == 'main'
-    environment: 
-      name: dev_deploy
-
-    steps: 
-      - name: Terraform Destroy
+      - name: Terraform apply
+        run: terraform apply tfmyplan --auto-approve
         working-directory: 'terraform_labs'
-        run: terraform destroy -auto-approve
