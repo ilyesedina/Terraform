@@ -47,7 +47,7 @@ jobs:
 
   terraform-apply:
     runs-on: ubuntu-latest
-    uses: "./.github/workflows/terraform_apply.yaml"
+    #uses: "./.github/workflows/terraform_apply.yaml"
     needs: terraform-plan
   
   terraform-destroy:
