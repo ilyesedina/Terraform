@@ -2,9 +2,17 @@ name: 'Terraform Apply'
 run-name: Terraform Deploy by '@${{ github.actor }}'
 
 on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        description: Github env to pull vars and secrets from
+      environment:
+        type: string
+        description: Environment for folder structure
+      project:
+        type: string
+        description: The terraform project
 
 permissions:
   id-token: write   # This is required for requesting the JWT through OIDC
@@ -13,7 +21,7 @@ permissions:
 jobs:
   terraform-apply:
     runs-on: ubuntu-latest
-    environment: 
+    env: 
       name: dev_deploy
 
     steps:
@@ -37,15 +45,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
-        working-directory: 'terraform_labs'
+        working-directory: '${{ inputs.project }}'
 
       - name: Download tfmyplan artifact
         uses: actions/download-artifact@master
         with:
           name: tfmyplan
-          path: tfmyplan
+          path: '${{ inputs.project }}'
 
       - name: Terraform apply
-        working-directory: 'terraform_labs'
         run: terraform apply tfmyplan --auto-approve
+        working-directory: '${{ inputs.project }}'
         

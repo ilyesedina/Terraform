@@ -2,14 +2,27 @@ name: 'Terraform Plan'
 run-name: Terraform Deploy by '@${{ github.actor }}'
 
 on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        description: Github env to pull vars and secrets from
+      environment:
+        type: string
+        description: Environment for folder structure
+      project:
+        type: string
+        description: The terraform project
+
+permissions:
+  id-token: write   # This is required for requesting the JWT through OIDC
+  contents: read    # This is required for actions/checkout
 
 jobs:
   terraform-plan:
+    name: Terraform plan
     runs-on: ubuntu-latest
-    environment: 
+    env: 
       name: dev_plan
 
     steps:
@@ -32,14 +45,14 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Terraform Init
-        working-directory: 'terraform_labs'
+        working-directory: '${{ inputs.project }}'
         run: terraform init
 
       - name: Create artifact
         run: echo "This is my artifact" > tfmyplan
 
       - name: Terraform Plan and save to tfmyplan
-        working-directory: 'terraform_labs'
+        working-directory: '${{ inputs.project }}'
         run: terraform plan -out tfmyplan
 
       - name: Upload tfmyplan artifact
@@ -52,10 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     #needs: terraform-apply
     if: github.event.pull_request.merged == true  && github.event.pull_request.base.ref == 'main'
-    environment: 
+    env: 
       name: dev_deploy
 
     steps: 
       - name: Terraform Destroy
-        working-directory: 'terraform_labs'
+        working-directory: '${{ inputs.project }}'
         run: terraform destroy -auto-approve

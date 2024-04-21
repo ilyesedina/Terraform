@@ -1,5 +1,5 @@
-name: Sections - dev
-run-name: Elastic Forwarder - dev by '@${{ github.actor }}'
+name: 'Section Plan'
+run-name: Section Plan - dev by '@${{ github.actor }}'
 
 on:
   pull_request:
