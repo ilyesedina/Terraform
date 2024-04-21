@@ -4,15 +4,9 @@ run-name: Terraform Deploy by '@${{ github.actor }}'
 on:
   workflow_call:
     inputs:
-      env:
-        type: string
-        description: Environment for folder structure
       environment:
         type: string
         description: Github env to pull vars and secrets from
-      project:
-        type: string
-        description: The terraform project
 
 permissions:
   id-token: write   # This is required for requesting the JWT through OIDC
