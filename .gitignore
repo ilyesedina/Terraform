@@ -10,3 +10,4 @@ MyAWSKey.pem
 terraform_log.txt
 .stateserver
 state_data
+mystate
