@@ -3,8 +3,6 @@ run-name: Section Plan - dev by '@${{ github.actor }}'
 
 on:
   pull_request:
-        paths-ignore:
-            - '**.md'
         paths:
             - 'terraform_labs/section02/**'
             - 'terraform_labs/section03/**'
