@@ -35,6 +35,9 @@ jobs:
         working-directory: 'terraform_labs'
         run: terraform init
 
+      - name: Create artifact
+        run: echo "This is my artifact" > tfmyplan
+
       - name: Terraform Plan and save to tfmyplan
         working-directory: 'terraform_labs'
         run: terraform plan -out tfmyplan
@@ -43,10 +46,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: tfmyplan
-          path: terraform_labs/tfmyplan
-
-      - name: Create artifact
-        run: echo "This is my artifact" > tfmyplan
+          path: tfmyplan
 
   terraform-destroy:
     runs-on: ubuntu-latest
