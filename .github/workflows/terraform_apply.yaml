@@ -39,12 +39,13 @@ jobs:
         run: terraform init
         working-directory: 'terraform_labs'
 
-      - name: Download tfmyplan
+      - name: Download tfmyplan artifact
         uses: actions/download-artifact@master
         with:
           name: tfmyplan
           path: terraform_labs/tfmyplan
 
       - name: Terraform apply
-        run: terraform apply tfmyplan --auto-approve
         working-directory: 'terraform_labs'
+        run: terraform apply tfmyplan --auto-approve
+        
