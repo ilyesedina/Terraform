@@ -45,15 +45,15 @@ jobs:
 
       - name: Terraform init
         run: terraform init
-        working-directory: '${{ inputs.project }}'
+        working-directory: 'terraform_labs'
 
       - name: Download tfmyplan artifact
         uses: actions/download-artifact@master
         with:
           name: tfmyplan
-          path: '${{ inputs.project }}'
+          path: tfmyplan
 
       - name: Terraform apply
+        working-directory: 'terraform_labs'
         run: terraform apply tfmyplan --auto-approve
-        working-directory: '${{ inputs.project }}'
         
