@@ -44,7 +44,7 @@ jobs:
         with:
           name: tfmyplan
           path: terraform_labs/tfmyplan
-          
+
       - name: Create artifact
         run: echo "This is my artifact" > tfmyplan
 

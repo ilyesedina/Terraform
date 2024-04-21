@@ -1,0 +1,34 @@
+name: Sections - dev
+run-name: Elastic Forwarder - dev by '@${{ github.actor }}'
+
+on:
+  pull_request:
+        paths-ignore:
+            - '**.md'
+        paths:
+            - 'terraform_labs/section02/**'
+            - 'terraform_labs/section03/**'
+            - 'terraform_labs/section04/**'
+            - 'terraform_labs/section0402/**'
+            - 'terraform_labs/section0403/**'
+            - 'terraform_labs/section0500/**'
+            - 'terraform_labs/section0600/**'
+            - 'terraform_labs/section0600/modules/**'
+            - 'terraform_labs/section0700/**'
+            - 'terraform_labs/section0703/**'
+            - 'terraform_labs/section0800/**'
+
+permissions:
+    id-token: write   # This is required for requesting the JWT through OIDC
+    contents: read    # This is required for actions/checkout
+
+jobs:
+  terraform-plan:
+    uses: "./.github/workflows/terraform_plan.yaml"
+    with:
+      env: dev_plan
+  terraform-apply:
+    uses: "./.github/workflows/terraform_apply.yaml"
+    with:
+      env: dev_deploy
+    needs: terraform-plan
