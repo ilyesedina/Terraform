@@ -2,7 +2,11 @@ name: 'Terraform Plan'
 run-name: Terraform Deploy by '@${{ github.actor }}'
 
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+      environment:
+        type: string
+        description: Github env to pull vars and secrets from
 
 permissions:
   id-token: write   # This is required for requesting the JWT through OIDC
