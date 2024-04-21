@@ -6,10 +6,10 @@ on:
     inputs:
       env:
         type: string
-        description: Github env to pull vars and secrets from
+        description: Environment for folder structure
       environment:
         type: string
-        description: Environment for folder structure
+        description: Github env to pull vars and secrets from
       project:
         type: string
         description: The terraform project
@@ -21,7 +21,7 @@ permissions:
 jobs:
   terraform-apply:
     runs-on: ubuntu-latest
-    env: 
+    environment: 
       name: dev_deploy
 
     steps:

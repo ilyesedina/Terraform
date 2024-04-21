@@ -6,7 +6,10 @@ on:
     inputs:
       env:
         type: string
-        description: Github env to pull vars and secrets from
+        description: Environment for folder structure
+      environment:
+        type: string
+        description: Github env to pull vars and secrets from 
       project:
         type: string
         description: The terraform project
@@ -19,7 +22,7 @@ jobs:
   terraform-plan:
     name: Terraform plan
     runs-on: ubuntu-latest
-    env: 
+    environment: 
       name: dev_plan
 
     steps:
@@ -62,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     #needs: terraform-apply
     if: github.event.pull_request.merged == true  && github.event.pull_request.base.ref == 'main'
-    env: 
+    environment: 
       name: dev_deploy
 
     steps: 
