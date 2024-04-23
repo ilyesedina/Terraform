@@ -1,14 +1,3 @@
-terraform {
-  backend "remote" {
-    organization = "krausen"
-
-    workspaces {
-      name = "variable_validation"
-    }
-  }
-}
-
-
 variable "cloud" {
   type = string
 
