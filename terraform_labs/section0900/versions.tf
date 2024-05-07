@@ -31,7 +31,7 @@ terraform {
 
 terraform {
  # Local backend
-/*   backend "local" {
+  /*   backend "local" {
     path = "mystate/terraform.tfstate"
   }  */ 
   backend "s3" {
