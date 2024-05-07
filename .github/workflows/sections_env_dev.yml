@@ -4,17 +4,7 @@ run-name: Section Plan - dev by '@${{ github.actor }}'
 on:
   pull_request:
         paths:
-            - 'terraform_labs/section02/**'
-            - 'terraform_labs/section03/**'
             - 'terraform_labs/section04/**'
-            - 'terraform_labs/section0402/**'
-            - 'terraform_labs/section0403/**'
-            - 'terraform_labs/section0500/**'
-            - 'terraform_labs/section0600/**'
-            - 'terraform_labs/section0600/modules/**'
-            - 'terraform_labs/section0700/**'
-            - 'terraform_labs/section0703/**'
-            - 'terraform_labs/section0800/**'
 
 permissions:
     id-token: write   # This is required for requesting the JWT through OIDC
