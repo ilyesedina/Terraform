@@ -4,7 +4,7 @@ run-name: Terraform Deploy by '@${{ github.actor }}'
 on:
   workflow_call:
     inputs:
-      environment:
+      env:
         type: string
         description: Github env to pull vars and secrets from
 
@@ -16,7 +16,7 @@ jobs:
   terraform-plan:
     name: Terraform plan
     runs-on: ubuntu-latest
-    environment: 
+    env: 
       name: dev_plan
 
     steps:

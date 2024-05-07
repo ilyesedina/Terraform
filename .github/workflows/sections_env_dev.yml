@@ -24,9 +24,9 @@ jobs:
   terraform-plan:
     uses: "./.github/workflows/terraform_plan.yaml"
     with:
-      environment: dev_plan
+      env: dev_plan
   terraform-apply:
     uses: "./.github/workflows/terraform_apply.yaml"
     with:
-      environment: dev_deploy
+      env: dev_deploy
     needs: terraform-plan
