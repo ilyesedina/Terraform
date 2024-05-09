@@ -40,9 +40,6 @@ jobs:
           name: tfmyplan
           path: tfmyplan
 
-      - name: List files
-        run: ls -la
-
       - name: Terraform apply
         working-directory: 'terraform_labs'
         env:
