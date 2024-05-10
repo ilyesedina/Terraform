@@ -13,15 +13,21 @@ variable "aws_access_key" {
   type        = string
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
-  type        = string
-  default     = "10.0.0.0/16"
-}
-
 variable "vpc_name" {
   type    = string
   default = "demo_vpc"
+}
+
+variable "vpc_cidr" {
+  type    = string
+  default = "10.0.0.0/16"
+}
+
+variable "private_subnets" {
+  default = {
+    "private_subnet_1" = 1
+    "private_subnet_2" = 2
+  }
 }
 
 variable "public_subnets" {
@@ -34,7 +40,7 @@ variable "public_subnets" {
 variable "variables_sub_cidr" {
   description = "CIDR Block for the Variables Subnet"
   type        = string
-  default     = "10.0.202.0/24"
+  default     = "10.0.0.0/24"
 }
 
 variable "variables_sub_az" {
@@ -49,26 +55,8 @@ variable "variables_sub_auto_ip" {
   default     = "true"
 }
 
-variable "private_subnets" {
-  default = {
-    "private_subnet_1" = 1
-    "private_subnet_2" = 2
-  }
-}
-
 variable "environment" {
   description = "Environment for deployment"
   type        = string
   default     = "dev"
-}
-
-variable "phone_number" {
-  type      = string
-  sensitive = true
-  default   = "867-5309"
-}
-
-output "phone_number" {
-  value     = var.phone_number
-  sensitive = true
 }
