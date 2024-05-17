@@ -35,9 +35,6 @@ jobs:
         working-directory: 'terraform_labs'
         run: TF_VAR_aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} TF_VAR_aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} terraform init
 
-      - name: Create artifact
-        run: echo "This is my artifact" > tfmyplan
-
       - name: Terraform Plan and save to tfmyplan
         working-directory: 'terraform_labs'
         run: terraform plan -out tfmyplan
