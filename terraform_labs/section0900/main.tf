@@ -81,6 +81,16 @@ resource "aws_subnet" "public_subnets" {
     Terraform = "true"
   }
 }
+resource "aws_subnet" "this" {
+  vpc_id            = var.variables_sub_auto_ip
+  availability_zone = var.variables_sub_az
+  cidr_block        = var.variables_sub_cidr  # Update with your desired CIDR block
+
+  tags = {
+    Name      = "sub-variables-us-east-1a"
+    Terraform = "true"
+  }
+}
 
 #Create route tables for public and private subnets
 resource "aws_route_table" "public_route_table" {
