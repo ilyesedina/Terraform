@@ -81,8 +81,9 @@ resource "aws_subnet" "public_subnets" {
     Terraform = "true"
   }
 }
+#Test the variables with the following code
 resource "aws_subnet" "this" {
-  vpc_id            = var.variables_sub_auto_ip
+  vpc_id            = aws_vpc.vpc.id #var.variables_sub_auto_ip
   availability_zone = var.variables_sub_az
   cidr_block        = var.variables_sub_cidr  # Update with your desired CIDR block
 

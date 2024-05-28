@@ -52,7 +52,7 @@ variable "variables_sub_az" {
 variable "variables_sub_auto_ip" {
   description = "Set Automatic IP Assigment for Variables Subnet"
   type        = string
-  default     = "vpc-00534a911d8083f0a"
+  default     = "true"
 }
 
 variable "environment" {

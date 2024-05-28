@@ -9,6 +9,7 @@ provider "aws" {
       Environment = terraform.workspace
       Owner       = "IlyesQSC"
       Provisoned  = "Terraform"
+      Repository  = "https://github.com/ilyesedina/Terraform"
     }
   }
 }
