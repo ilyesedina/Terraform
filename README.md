@@ -12,7 +12,7 @@ Following [Terraform Hands on Lab Course](https://www.udemy.com/course/terraform
 | 6 | [Interact with Terraform Modules](https://github.com/ilyesedina/Terraform/pull/11) | Adding latter |
 | 7 | [Use the Core Terraform Workflow](https://github.com/ilyesedina/Terraform/pull/12) | Adding latter |
 | 8 | [ Implement and Maintain State](https://github.com/ilyesedina/Terraform/pull/15) | Adding latter |
-| 9 | Read, Generate, and Modify Configuration | Adding latter |
+| 9 | [ Read, Generate, and Modify Configuration](https://github.com/ilyesedina/Terraform/pull/17) | Adding latter |
 | 10 | Understand Terraform Cloud Capabilities | Adding latter |
 | 11 | Additional labs | Adding latter |
 | 12 | Extra tips for the Exam | Adding latter |
