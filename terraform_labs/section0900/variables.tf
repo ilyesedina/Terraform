@@ -61,7 +61,7 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "us-east-1-azs" {
+variable "eu-west-1-azs" {
     type = list(string) 
 # type is an optional attribute, since terraform can prdict the type based on how the default value is defined
     default = [
