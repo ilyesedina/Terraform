@@ -72,3 +72,11 @@ variable "us-east-1-azs" {
         "eu-west-1e"
     ]
 }
+
+variable "ip" {
+  type = map(string)
+  default = { 
+    prod = "10.0.150.0/24"
+    dev  = "10.0.250.0/24"
+  }
+}
