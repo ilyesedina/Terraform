@@ -80,3 +80,17 @@ variable "ip" {
     dev  = "10.0.250.0/24"
   }
 }
+
+variable "env" {
+  type = map(any)
+  default = {
+    prod = {
+      ip = "10.0.151.0/24"
+      az = "eu-west-1a"
+    }
+    dev  = {
+      ip = "10.0.252.0/24"
+      az = "eu-west-1b"
+    }
+  }
+}

@@ -180,3 +180,10 @@ resource "aws_subnet" "list_subnet" {
   cidr_block        = each.value # var.ip[var.environment] the cidr block has to be unique.
   availability_zone = var.eu-west-1-azs[0]
 }
+
+resource "aws_subnet" "map_subnet" {
+  for_each          = var.env # looping through a complex map values.
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value.ip 
+  availability_zone = each.value.az
+}
