@@ -173,3 +173,10 @@ resource "aws_instance" "web_server" {                            # BLOCK
     Name = "Web EC2 Server"
   }
 }
+
+resource "aws_subnet" "list_subnet" {
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = "10.0.200.0/24"
+  availability_zone = var.us-east-1-azs[0]
+  # setting a static value for the availability zone
+}
