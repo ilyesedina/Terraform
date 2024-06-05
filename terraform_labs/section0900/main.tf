@@ -175,8 +175,8 @@ resource "aws_instance" "web_server" {                            # BLOCK
 }
 
 resource "aws_subnet" "list_subnet" {
-  for_each          = var.ip # looping through the map values
+  for_each          = var.ip # looping through the map values.
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = each.value # var.ip[var.environment] the cidr block has to be unique
+  cidr_block        = each.value # var.ip[var.environment] the cidr block has to be unique.
   availability_zone = var.eu-west-1-azs[0]
 }
