@@ -37,7 +37,7 @@ jobs:
 
       - name: Terraform Plan and save to tfmyplan
         working-directory: 'terraform_labs/section0402'
-        run: terraform plan -out tfmyplan
+        run: TF_VAR_aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} TF_VAR_aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} terraform plan -out tfmyplan
 
       - name: Upload tfmyplan artifact
         uses: actions/upload-artifact@master
