@@ -27,6 +27,28 @@ locals {
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
 
+data "aws_s3_bucket" "data_bucket" {
+  bucket = "my-terraform-state-demo-ilyes"
+}
+
+resource "aws_iam_policy" "policy" {
+  name        = "data_bucket_policy"
+  description = "Deny access to my bucket"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:Get*",
+                "s3:List*"
+            ],
+            "Resource": "${data.aws_s3_bucket.data_bucket.arn}"
+        }
+    ]
+  })
+}
+
 # Terraform Data Block - Lookup Ubuntu 20.04
 data "aws_ami" "ubuntu" {
   most_recent = true
