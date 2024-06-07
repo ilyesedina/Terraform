@@ -38,14 +38,14 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: tfmyplan
-          path: 'terraform_labs/tfmyplan'
+          path: 'tfmyplan'
 
       - name: Terraform apply
         working-directory: 'terraform_labs'
         env:
           TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: terraform apply terraform_labs/tfmyplan
+        run: terraform apply tfmyplan
         
   terraform-destroy:
     runs-on: ubuntu-latest
