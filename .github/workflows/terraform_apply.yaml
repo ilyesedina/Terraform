@@ -38,7 +38,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: tfmyplan
-          path: 'tfmyplan'
+          path: 'terraform_labs/tfmyplan'
 
       - name: Terraform apply
         working-directory: 'terraform_labs'
