@@ -32,15 +32,15 @@ jobs:
           find . -type f -print0 | xargs -0 dos2unix --quiet --keepdate
 
       - name: Terraform Init
-        working-directory: 'terraform_labs'
+        working-directory: 'terraform_labs/section0402'
         run: TF_VAR_aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} TF_VAR_aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} terraform init
 
       - name: Terraform Plan and save to tfmyplan
-        working-directory: 'terraform_labs'
+        working-directory: 'terraform_labs/section0402'
         run: terraform plan -out tfmyplan
 
       - name: Upload tfmyplan artifact
         uses: actions/upload-artifact@master
         with:
           name: tfmyplan
-          path: 'terraform_labs/tfmyplan'
+          path: 'terraform_labs/section0402/tfmyplan'
