@@ -1,15 +1,15 @@
 variable "phone_number" {
-  type = string
+  type      = string
   sensitive = true
-  default = "867-5309"
+  default   = "867-5309"
 }
 
 locals {
   contact_info = {
-      cloud = var.cloud
-      department = var.no_caps
-      cost_code = var.character_limit
-      phone_number = var.phone_number
+    cloud        = var.cloud
+    department   = var.no_caps
+    cost_code    = var.character_limit
+    phone_number = var.phone_number
   }
 
   my_number = nonsensitive(var.phone_number)
@@ -28,7 +28,7 @@ output "cost_code" {
 }
 
 output "phone_number" {
-  value = local.contact_info.phone_number
+  value     = local.contact_info.phone_number
   sensitive = true
 }
 

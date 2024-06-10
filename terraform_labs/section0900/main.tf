@@ -41,16 +41,16 @@ resource "aws_iam_policy" "policy" {
   name        = "data_bucket_policy"
   description = "Deny access to my bucket"
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:Get*",
-                "s3:List*"
-            ],
-            "Resource": "${data.aws_s3_bucket.data_bucket.arn}"
-        }
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:Get*",
+          "s3:List*"
+        ],
+        "Resource" : "${data.aws_s3_bucket.data_bucket.arn}"
+      }
     ]
   })
 }
@@ -114,7 +114,7 @@ resource "aws_subnet" "public_subnets" {
 resource "aws_subnet" "this" {
   vpc_id            = aws_vpc.vpc.id #var.variables_sub_auto_ip
   availability_zone = var.variables_sub_az
-  cidr_block        = var.variables_sub_cidr  # Update with your desired CIDR block
+  cidr_block        = var.variables_sub_cidr # Update with your desired CIDR block
 
   tags = {
     Name      = "sub-variables-us-east-1a"
@@ -176,7 +176,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 #Create EIP for NAT Gateway
 resource "aws_eip" "nat_gateway_eip" {
-  vpc = true
+  vpc        = true
   depends_on = [aws_internet_gateway.internet_gateway]
   tags = {
     Name = "demo_igw_eip"
@@ -213,6 +213,27 @@ resource "aws_subnet" "list_subnet" {
 resource "aws_subnet" "map_subnet" {
   for_each          = var.env # looping through a complex map values.
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = each.value.ip 
+  cidr_block        = each.value.ip
   availability_zone = each.value.az
+}
+
+resource "aws_security_group" "main" {
+  name   = "core-sg"
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    description = "Port 443"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Port 80"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

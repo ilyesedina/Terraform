@@ -62,20 +62,20 @@ variable "environment" {
 }
 
 variable "eu-west-1-azs" {
-    type = list(string) 
-# type is an optional attribute, since terraform can prdict the type based on how the default value is defined
-    default = [
-        "eu-west-1a",
-        "eu-west-1b",
-        "eu-west-1c",
-        "eu-west-1d",
-        "eu-west-1e"
-    ]
+  type = list(string)
+  # type is an optional attribute, since terraform can prdict the type based on how the default value is defined
+  default = [
+    "eu-west-1a",
+    "eu-west-1b",
+    "eu-west-1c",
+    "eu-west-1d",
+    "eu-west-1e"
+  ]
 }
 
 variable "ip" {
   type = map(string)
-  default = { 
+  default = {
     prod = "10.0.150.0/24"
     dev  = "10.0.250.0/24"
   }
@@ -88,7 +88,7 @@ variable "env" {
       ip = "10.0.151.0/24"
       az = "eu-west-1a"
     }
-    dev  = {
+    dev = {
       ip = "10.0.252.0/24"
       az = "eu-west-1b"
     }
@@ -97,19 +97,19 @@ variable "env" {
 
 # Built-in Functions Lab
 variable "num_1" {
-  type = number # integer or a floating-point number 
+  type        = number # integer or a floating-point number 
   description = "Numbers for function labs"
-  default = 88
+  default     = 88
 }
 
 variable "num_2" {
-  type = number // type is an optional attribute
+  type        = number // type is an optional attribute
   description = "Numbers for function labs"
-  default = 73
+  default     = 73
 }
 
 variable "num_3" {
-  type = number
+  type        = number
   description = "Numbers for function labs"
-  default = 52
+  default     = 52
 }
