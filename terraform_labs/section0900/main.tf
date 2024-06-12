@@ -97,6 +97,10 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
+resource "tls_private_key" "generated" {
+  algorithm = "RSA"
+}
+
 #Deploy the public subnets
 resource "aws_subnet" "public_subnets" {
   for_each                = var.public_subnets
