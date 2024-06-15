@@ -1,0 +1,61 @@
+name: 'Terraform Apply'
+run-name: Terraform Deploy by '@${{ github.actor }}'
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        description: Github env to pull vars and secrets from
+
+permissions:
+  id-token: write   # This is required for requesting the JWT through OIDC
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  terraform-apply:
+    runs-on: ubuntu-latest
+    env: 
+      name: dev_deploy
+
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Normalize Line Endings
+        run: |
+          sudo apt-get install -y dos2unix
+          find . -type f -print0 | xargs -0 dos2unix --quiet --keepdate
+
+      - name: Terraform init
+        run: terraform init
+        working-directory: 'terraform_labs/section0402'
+
+      - name: Download tfmyplan artifact
+        uses: actions/download-artifact@master
+        with:
+          name: tfmyplan
+          path: 'terraform_labs/section0402/tfmyplan'
+
+      - name: Terraform apply
+        working-directory: 'terraform_labs/section0402'
+        env:
+          TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: TF_VAR_aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} TF_VAR_aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} terraform apply tfmyplan
+        
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    needs: terraform-apply
+    if: github.event.pull_request.merged == true  && github.event.pull_request.base.ref == 'main'
+    env: 
+      name: dev_deploy
+
+    steps: 
+      - name: Terraform Destroy
+        working-directory: 'terraform_labs'
+        run: TF_VAR_aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }} TF_VAR_aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }} terraform destroy -auto-approve
+        

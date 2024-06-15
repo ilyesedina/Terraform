@@ -6,7 +6,7 @@ data "aws_region" "current" {}
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr
   tags = {
-    Name        = var.vpc_name
+    Name = var.vpc_name
     #Environment = "demo_environment" "stage"
     Environment = "QA"
     Terraform   = "true"
@@ -126,7 +126,7 @@ resource "aws_subnet" "variables-subnet" {
 resource "tls_private_key" "generated" {
   algorithm = "RSA" # protects sensitive data through encryption and decryption using a private and public key pair
   # (RSA explained)[https://www.youtube.com/watch?v=4zahvcJ9glg&ab_channel=EddieWoo]
-} 
+}
 
 resource "local_file" "private_key_pem" {
   content  = tls_private_key.generated.private_key_pem
