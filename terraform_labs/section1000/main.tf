@@ -6,7 +6,7 @@ Contributors: Bryan and Gabe
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-west-1"
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -60,7 +60,7 @@ resource "aws_route_table" "public_route_table" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.internet_gateway.id
-    #nat_gateway_id = aws_nat_gateway.nat_gateway.id
+    # nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
   tags = {
     Name      = "demo_public_rtb"
@@ -107,7 +107,6 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 #Create EIP for NAT Gateway
 resource "aws_eip" "nat_gateway_eip" {
-  domain     = "vpc"
   depends_on = [aws_internet_gateway.internet_gateway]
   tags = {
     Name = "demo_igw_eip"
@@ -161,9 +160,9 @@ resource "aws_instance" "ubuntu_server" {
   }
 
   # Leave the first part of the block unchanged and create our `local-exec` provisioner
-  # provisioner "local-exec" {
-  #   command = "chmod 600 ${local_file.private_key_pem.filename}"
-  # }
+   provisioner "local-exec" {
+     command = "chmod 600 ${local_file.private_key_pem.filename}"
+   }
 
   provisioner "remote-exec" {
     inline = [
@@ -194,7 +193,9 @@ resource "aws_security_group" "vpc-ping" {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["171.20.67.2/32"] 
+
+
   }
   egress {
     description = "Allow all ip and ports outboun"
@@ -209,22 +210,22 @@ resource "tls_private_key" "generated" {
   algorithm = "RSA"
 }
 
-# resource "local_file" "private_key_pem" {
-#   content  = tls_private_key.generated.private_key_pem
-#   filename = "MyAWSKey.pem"
-# }
+resource "local_file" "private_key_pem" {
+  content  = tls_private_key.generated.private_key_pem
+  filename = "MyAWSKey1.pem"
+}
 
 resource "aws_key_pair" "generated" {
-  key_name   = "MyAWSKey"
+  key_name   = "MyAWSKey1"
   public_key = tls_private_key.generated.public_key_openssh
-}
+}  
 
 resource "aws_security_group" "ingress-ssh" {
   name   = "allow-all-ssh"
   vpc_id = aws_vpc.vpc.id
   ingress {
     cidr_blocks = [
-      "0.0.0.0/0"
+      "171.20.67.2/32"
     ]
     from_port = 22
     to_port   = 22
@@ -248,7 +249,7 @@ resource "aws_security_group" "vpc-web" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["171.20.67.2/32"]
   }
 
   ingress {
@@ -256,7 +257,7 @@ resource "aws_security_group" "vpc-web" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["171.20.67.2/32"]
   }
 
   egress {
@@ -283,9 +284,9 @@ resource "aws_instance" "web_server" {
   }
 
   # Leave the first part of the block unchanged and create our `local-exec` provisioner
-  # provisioner "local-exec" {
-  #   command = "chmod 600 ${local_file.private_key_pem.filename}"
-  # }
+   provisioner "local-exec" {
+     command = "chmod 600 ${local_file.private_key_pem.filename}"
+   }
 
   provisioner "remote-exec" {
     inline = [
