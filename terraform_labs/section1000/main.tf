@@ -331,3 +331,24 @@ output "public_ip_server_subnet_1" {
 output "public_dns_server_subnet_1" {
   value = aws_instance.web_server.public_dns
 }
+
+resource "aws_secretsmanager_secret" "this" {
+  name = "secretsmanager"
+}
+resource "aws_secretsmanager_secret_version" "this" {
+  secret_id     = aws_secretsmanager_secret.this.id
+  secret_string = jsonencode(local.credentials)
+}
+
+data "aws_secretsmanager_random_password" "test" {
+  password_length = 50
+  exclude_numbers = true
+}
+
+locals {
+  credentials = {
+    username = "value1"
+    pass = data.aws_secretsmanager_random_password.test.random_password
+  }
+}
+
