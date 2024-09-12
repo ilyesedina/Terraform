@@ -79,3 +79,4 @@ end
 ![MAP](img\MindmapTerraform.pdf)
 ### Ideas for Improvments:
 Make reuseable modules for the labs to have DRY code
+Add CICD workflow for deployment
