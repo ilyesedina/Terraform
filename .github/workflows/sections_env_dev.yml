@@ -1,0 +1,22 @@
+name: 'Section Plan'
+run-name: Section Plan - dev by '@${{ github.actor }}'
+
+on:
+  pull_request:
+        paths:
+            - 'terraform_labs/section0402/**'
+
+permissions:
+    id-token: write   # This is required for requesting the JWT through OIDC
+    contents: read    # This is required for actions/checkout
+
+jobs:
+  terraform-plan:
+    uses: "./.github/workflows/terraform_plan.yaml"
+    with:
+      env: dev_plan
+  terraform-apply:
+    uses: "./.github/workflows/terraform_apply.yaml"
+    with:
+      env: dev_deploy
+    needs: terraform-plan
